@@ -1410,23 +1410,23 @@ class PlayState extends MusicBeatState
 		bbhead.animation.addByPrefix('leaving', 'bb leaving', 24, false
 	     
                 
-		var bbcartel:FlxSprite = new FlxSprite(0, 0)
+		var bbcartel:FlxSprite = new FlxSprite
 		bbcartel.frames = Paths.getSparrowAtlas('balloonboy/sign_assets','shared');
 		bbcartel.animation.addByPrefix('coming', 'sign coming', 24, false);
 		bbcartel.animation.addByPrefix('idle', 'sign idle', 24, true);
 		bbcartel.animation.addByPrefix('leaving', 'sign leaving', 24, false
 	
-		var balloonsone:FlxSprite = new FlxSprite(0, 0)
+		var balloonsone:FlxSprite = new FlxSprite(0, 0);
 		balloonsone.frames = Paths.getSparrowAtlas('balloonboy/balloon1_assets','shared');
 		balloonsone.animation.addByPrefix('one', 'Yellow', 24, false);
 		balloonsone.animation.addByPrefix('two', 'red', 24, false);
 
-		var balloonstwo:FlxSprite = new FlxSprite(0, 0)
+		var balloonstwo:FlxSprite = new FlxSprite(0, 0);
 		balloonstwo.frames = Paths.getSparrowAtlas('balloonboy/balloon2_assets','shared');
 		balloonstwo.animation.addByPrefix('one', 'Blue', 24, false);
 		balloonstwo.animation.addByPrefix('two', 'Purple', 24, false);
 
-		var balloonsfinal:FlxSprite = new FlxSprite(0, 0)
+		var balloonsfinal:FlxSprite = new FlxSprite(0, 0);
 		balloonsfinal.frames = Paths.getSparrowAtlas('balloonboy/balloons_assets','shared');
 		balloonsfinal.animation.addByPrefix('one', 'balloons', 24, false);
 				
