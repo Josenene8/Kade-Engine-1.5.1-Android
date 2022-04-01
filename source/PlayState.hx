@@ -1408,8 +1408,9 @@ class PlayState extends MusicBeatState
 		bbhead.animation.addByPrefix('coming', 'bb coming', 24, false);
 		bbhead.animation.addByPrefix('idle', 'bb idle', 24, true);
 		bbhead.animation.addByPrefix('leaving', 'bb leaving', 24, false
-					     
-                var bbcartel:FlxSprite = new FlxSprite(0, 0);
+	     
+
+		var bbcartel:FlxSprite = new FlxSprite(0, 0);
 		bbcartel.frames = Paths.getSparrowAtlas('balloonboy/sign_assets','shared');
 		bbcartel.animation.addByPrefix('coming', 'sign coming', 24, false);
 		bbcartel.animation.addByPrefix('idle', 'sign idle', 24, true);
