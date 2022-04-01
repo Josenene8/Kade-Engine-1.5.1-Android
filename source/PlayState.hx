@@ -170,7 +170,10 @@ class PlayState extends MusicBeatState
 	var upperBoppers:FlxSprite;
 	var bottomBoppers:FlxSprite;
 	var santa:FlxSprite;
-
+        var secrettext:FlxText;
+	var wiggleShit:WiggleEffect = new WiggleEffect();
+	var glitcheffect:FlxGlitchEffect = new FlxGlitchEffect();
+	
 	var fc:Bool = true;
 
 	var bgGirls:BackgroundGirls;
@@ -222,8 +225,144 @@ class PlayState extends MusicBeatState
 	public function removeObject(object:FlxBasic) { remove(object); }
 
 
+
+	//JOLT VARIABLES
+	// (WITHERED FREDDY BALLOONS VARIABLE) 
+	var balloons:FlxSprite;
+	// (SHADOWBONNIE STAGE MINIGAME BACKGROUNDS VARIABLES)
+	var minigameone:FlxSprite;
+	var minigametwo:FlxSprite;
+	var minigamethree:FlxSprite;
+	var minigamefour:FlxSprite;
+	var minigamefive:FlxSprite;
+	var cover:FlxSprite;
+	var purplething:FlxSprite;
+	
+	// REMNANT FRAMES
+	
+	var remnantfour:FlxSprite;
+	
+
+	// REMNANT COUNT VALUE
+
+	//var remcount:Int;
+
+	var clickmusic:FlxSprite;
+	var box:FlxSprite;
+
+
+	// NEW STUFF
+
+	var loosehealtheffect:FlxSprite;
+	var drainwarning:FlxSprite;
+	var ayolookoutBG:FlxSprite;
+	var ayolookoutTEXT:FlxSprite;
+
+	var fixedscreen:FlxSprite;
+
+
+
+	var randomsound:Int;
+	
+	
 	override public function create()
-	{
+	{      if(SONG.song.toLowerCase() == 'shadows' || SONG.song.toLowerCase() == 'shadows-freeplay' || SONG.song.toLowerCase() == 'shadows-easy' || SONG.song.toLowerCase() == 'shadows-hard')
+		{
+			FlxG.debugger.visible = false;
+			
+			
+		}
+
+		FlxG.debugger.visible = false;
+
+		trace(FlxG.log);
+	
+
+		FlxG.save.data.botplay = false;
+		
+	
+		randomsound = Std.random(3);
+		FlxG.watch.add(this, 'randomsound');
+	 
+                //remcount = 0;
+		
+	 
+	        new FlxTimer().start(7, function(tmr:FlxTimer)
+		{
+			if(remnantfour.alpha > 0)
+			{
+				remnantfour.alpha = remnantfour.alpha - 0.03;
+			    FlxG.sound.play(Paths.sound('RemnantAppear', 'shared'), 0.5, false);
+			}
+			else
+			{
+
+			}
+		}, 0);
+
+
+		clickmusic = new FlxSprite(480, 470);
+		clickmusic.loadGraphic(Paths.image('musicbox/winduptwo','shared'));
+		clickmusic.setGraphicSize(Std.int(clickmusic.width / 1.5));
+
+		box = new FlxSprite(100, 290);
+		box.loadGraphic(Paths.image('musicbox/boxicon','shared'));
+		box.setGraphicSize(Std.int(box.width / 4.5));
+		
+		finalbonnie = new FlxSprite(200, 0);
+		finalbonnie.frames = Paths.getSparrowAtlas('characters/shadowbonnie_assets','shared');
+		finalbonnie.animation.addByPrefix('idle', 'Mom Idle', 24, true);
+		
+	 
+	 
+	 
+	        fade = new FlxSprite(0, 0);
+		fade.makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
+		fade.width = FlxG.width;
+		fade.height = FlxG.height;
+
+
+		flash = new FlxSprite(0, 0);
+		flash.makeGraphic(FlxG.width, FlxG.height, FlxColor.WHITE);
+		flash.width = FlxG.width;
+		flash.height = FlxG.height;
+
+		lines = new FlxSprite(0, 0);
+		lines.loadGraphic(Paths.image('shadowbonniebgs/lines','shared'));
+		lines.width = FlxG.width;
+		lines.height = FlxG.height;
+
+		
+
+		remnantfour = new FlxSprite(0, 0);
+		remnantfour.loadGraphic(Paths.image('remnantfour','shared'));
+
+		
+
+
+		loosehealtheffect = new FlxSprite(0, 0);
+		loosehealtheffect.loadGraphic(Paths.image('healtheffect','shared'));
+
+		drainwarning = new FlxSprite(0, 0);
+		drainwarning.loadGraphic(Paths.image('warningtriangle','shared'));
+
+
+		ayolookoutBG = new FlxSprite(0, 0);
+		ayolookoutBG.loadGraphic(Paths.image('warningchargebg','shared'));
+
+		ayolookoutTEXT = new FlxSprite(0, 0);
+		ayolookoutTEXT.loadGraphic(Paths.image('warningchargetexto','shared'));
+
+		fixedscreen = new FlxSprite(0, 0);
+		fixedscreen.loadGraphic(Paths.image('fixed','shared'));
+		
+	 
+	 
+	 
+	 
+	 
+	 
+	        
 		instance = this;
 		
 		if (FlxG.save.data.fpsCap > 290)
@@ -700,6 +839,144 @@ class PlayState extends MusicBeatState
 						stageCurtains.active = false;
 	
 						add(stageCurtains);
+			}
+			// WITHERED FREDDY STAGE 1
+			case 'diningarea':
+				{
+					defaultCamZoom = 0.8;
+					curStage = 'diningarea';
+					var bg:FlxSprite = new FlxSprite().loadGraphic(Paths.image('freddystage/stageback','shared'));
+					bg.setGraphicSize(Std.int(bg.width / 0.9));
+					
+					bg.x = -600;
+					bg.y = -200;
+					add(bg);
+
+					balloons = new FlxSprite().loadGraphic(Paths.image('freddystage/stagecurtains','shared'));
+					balloons.setGraphicSize(Std.int(balloons.width * 0));
+					balloons.x = -580;
+					balloons.y = -200;
+					balloons.visible = true;
+					
+					
+					// var happybirthday = new FlxSprite();
+                                        // happybirthday.frames = Paths.getSparrowAtlas('freddystage/upperBop','shared');
+                                        // happybirthday.animation.addByPrefix('idle', 'Upper Crowd Bob', 24, true);
+                                        // happybirthday.antialiasing = true;
+                                        // happybirthday.x = 0;
+                                        // happybirthday.y = 0;
+                                        // add(happybirthday);
+                                        // happybirthday.animation.play('idle', false);
+					
+					
+			}
+			// PUPPET STAGE ASSETS
+			case 'puppetstage':
+				{
+					defaultCamZoom = 0.8;
+					curStage = 'puppetstage';
+					var bg:FlxSprite = new FlxSprite().loadGraphic(Paths.image('freddystage/puppetbg','shared'));
+					
+					bg.setGraphicSize(Std.int(bg.width * 2));
+					bg.x = -300;
+					bg.y = -300;
+					add(bg);
+
+					var animatronicsbg:FlxSprite = new FlxSprite(-170, -300);
+					animatronicsbg.frames = Paths.getSparrowAtlas('freddystage/Animatronics_BG','shared');
+					animatronicsbg.animation.addByPrefix('idle', 'Bottom Level Boppers', 24, true);
+					animatronicsbg.animation.play('idle');
+					animatronicsbg.setGraphicSize(Std.int(bg.width * 1.2));
+					
+					add(animatronicsbg);
+
+
+					balloons = new FlxSprite().loadGraphic(Paths.image('freddystage/stagecurtains','shared'));
+					balloons.setGraphicSize(Std.int(balloons.width * 0));
+					balloons.x = -580;
+					balloons.y = -200;
+					balloons.visible = true;
+					
+
+					
+					var happybirthday = new FlxSprite();
+					happybirthday.frames = Paths.getSparrowAtlas('freddystage/upperBop','shared');
+					happybirthday.animation.addByPrefix('idle', 'Upper Crowd Bob', 24, true);
+					happybirthday.antialiasing = true;
+					happybirthday.x = -200;
+					happybirthday.y = -200;
+					add(happybirthday);
+					happybirthday.animation.play('idle', false);
+				
+					
+			}
+			// SHADOW BONNIE STAGE ASSETS
+			case 'minigames':
+				{
+					// CODE
+					defaultCamZoom = 0.5;
+					curStage = 'minigames';
+					//VARIABLES AND ASSET CREATION
+
+
+					// MINIGAME 1 BACKGROUND
+
+
+					minigameone = new FlxSprite().loadGraphic(Paths.image('shadowbonniebgs/sb','shared'));
+					minigameone.setGraphicSize(Std.int(minigameone.width * 1.7));
+					minigameone.x = 0;
+					minigameone.y = 0;
+					add(minigameone);
+					minigameone.visible = false;
+
+
+					minigametwo = new FlxSprite().loadGraphic(Paths.image('shadowbonniebgs/mangle','shared'));
+					minigametwo.setGraphicSize(Std.int(minigametwo.width * 1.7));
+					minigametwo.x = 0;
+					minigametwo.y = 0;
+					add(minigametwo);
+					minigametwo.visible = false;
+					
+					minigamethree = new FlxSprite().loadGraphic(Paths.image('shadowbonniebgs/fredbear','shared'));
+					minigamethree.setGraphicSize(Std.int(minigamethree.width * 1.7));
+					minigamethree.x = 0;
+					minigamethree.y = 0;
+					add(minigamethree);
+					minigamethree.visible = false;
+
+					minigamefour = new FlxSprite().loadGraphic(Paths.image('shadowbonniebgs/bb','shared'));
+					minigamefour.setGraphicSize(Std.int(minigamefour.width * 1.7));
+					minigamefour.x = 0;
+					minigamefour.y = 0;
+					add(minigamefour);
+					minigamefour.visible = false;
+
+					minigamefive = new FlxSprite().loadGraphic(Paths.image('shadowbonniebgs/t_chica','shared'));
+					minigamefive.setGraphicSize(Std.int(minigamefive.width * 1.7));
+					minigamefive.x = 0;
+					add(minigamefive);
+					minigamefive.visible = false;
+
+					purplething = new FlxSprite(0, 0);
+					purplething.loadGraphic(Paths.image('freddystage/purplevoid','shared'));
+					purplething.setGraphicSize(Std.int(purplething.width * 2));
+					add(purplething);
+					
+					
+					cover = new FlxSprite(0, 0);
+		                        cover.makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
+		                        cover.setGraphicSize(Std.int(minigamefive.width * 7));
+					add(cover);
+					cover.alpha = 1;
+					
+					
+					
+					
+					
+					
+					
+					
+					
 				}
 			default:
 			{
@@ -786,6 +1063,13 @@ class PlayState extends MusicBeatState
 				dad.x -= 150;
 				dad.y += 100;
 				camPos.set(dad.getGraphicMidpoint().x + 300, dad.getGraphicMidpoint().y);
+			case 'vinnocent':
+				dad.y += 100;
+			case 'birdyone':
+				dad.y += 250;
+			case 'witheredfreddy':
+				dad.y += 100;
+				dad.x -= 190;
 		}
 
 
@@ -814,6 +1098,23 @@ class PlayState extends MusicBeatState
 				boyfriend.y += 220;
 				gf.x += 180;
 				gf.y += 300;
+			case 'diningarea':
+				boyfriend.y += 230;
+				gf.y += 200;
+				gf.x -= 200;
+				gf.setGraphicSize(Std.int(gf.width - 1.5));
+				dad.setGraphicSize(Std.int(dad.width / 0.8));
+			case 'puppetstage':
+				boyfriend.y -= 50;
+				boyfriend.x += 100;
+				gf.y -= 20;
+				dad.x -= 50;
+			case 'minigames':
+				boyfriend.y -= 50;
+				boyfriend.x += 20;
+				gf.y -= 20;
+				
+				
 			case 'schoolEvil':
 				if(FlxG.save.data.distractions){
 				// trailArea.scrollFactor.set();
@@ -1087,10 +1388,572 @@ class PlayState extends MusicBeatState
 
 		if (!loadRep)
 			rep = new Replay("na");
+			//MUSIC BOX STUFF
+				
+				
+			
+			//BALLOON BOY STUFF
+				
+				
+		var twelve:FlxSprite = new FlxSprite(500, 200);
+		twelve.loadGraphic(Paths.image('clocks/12','shared'));
+		var twoam:FlxSprite = new FlxSprite(500, 200);
+		twoam.loadGraphic(Paths.image('clocks/2','shared'));
+		var fiveam:FlxSprite = new FlxSprite(500, 200);
+		fiveam.loadGraphic(Paths.image('clocks/5','shared'));
+				
+				
+		var bbhead:FlxSprite = new FlxSprite(0, 0);
+		bbhead.frames = Paths.getSparrowAtlas('balloonboy/bb_assets','shared');
+		bbhead.animation.addByPrefix('coming', 'bb coming', 24, false);
+		bbhead.animation.addByPrefix('idle', 'bb idle', 24, true);
+		bbhead.animation.addByPrefix('leaving', 'bb leaving', 24, false
+					     
+                var bbcartel:FlxSprite = new FlxSprite(0, 0);
+		bbcartel.frames = Paths.getSparrowAtlas('balloonboy/sign_assets','shared');
+		bbcartel.animation.addByPrefix('coming', 'sign coming', 24, false);
+		bbcartel.animation.addByPrefix('idle', 'sign idle', 24, true);
+		bbcartel.animation.addByPrefix('leaving', 'sign leaving', 24, false);
 
+		var balloonsone:FlxSprite = new FlxSprite(0, 0);
+		balloonsone.frames = Paths.getSparrowAtlas('balloonboy/balloon1_assets','shared');
+		balloonsone.animation.addByPrefix('one', 'Yellow', 24, false);
+		balloonsone.animation.addByPrefix('two', 'red', 24, false);
+
+		var balloonstwo:FlxSprite = new FlxSprite(0, 0);
+		balloonstwo.frames = Paths.getSparrowAtlas('balloonboy/balloon2_assets','shared');
+		balloonstwo.animation.addByPrefix('one', 'Blue', 24, false);
+		balloonstwo.animation.addByPrefix('two', 'Purple', 24, false);
+
+		var balloonsfinal:FlxSprite = new FlxSprite(0, 0);
+		balloonsfinal.frames = Paths.getSparrowAtlas('balloonboy/balloons_assets','shared');
+		balloonsfinal.animation.addByPrefix('one', 'balloons', 24, false);
+				
+				
+				
+		
+		add(fade);
+		add(twelve);
+		add(twoam);
+		add(fiveam);
+		add(clickmusic);
+		add(box);
+		add(bbhead);
+		add(bbcartel);
+		add(balloonsone);
+		add(balloonstwo);
+		add(balloonsfinal);
+		add(lines);
+		
+		add(remnantfour);
+		
+		add(flash);
+		add(ayolookoutBG);
+		add(ayolookoutTEXT);
+		add(fixedscreen);
+		add(drainwarning);
+		add(loosehealtheffect);
+				
+				
+		twelve.alpha = 0;
+		
+		twoam.alpha = 0;
+		fiveam.alpha = 0;
+		fade.alpha = 1;
+		flash.alpha = 0;
+		lines.visible = false;
+		finalbonnie.alpha = 0;
+		
+		remnantfour.alpha = 0;
+		
+		loosehealtheffect.alpha = 0;
+		drainwarning.alpha = 0;
+		ayolookoutBG.visible = false;
+		ayolookoutTEXT.visible = false;
+		fixedscreen.alpha = 0;
+		finalbonnie.animation.play('idle', true);
+
+
+		fade.cameras = [camHUD];
+		flash.cameras = [camHUD];
+		twelve.cameras = [camHUD];
+		twoam.cameras = [camHUD];
+		fiveam.cameras = [camHUD];
+
+		bbhead.cameras = [camHUD];
+		bbcartel.cameras = [camHUD];
+		balloonsone.cameras = [camHUD];
+		balloonstwo.cameras = [camHUD];
+		balloonsfinal.cameras = [camHUD];
+		lines.cameras = [myCAM];
+				
+				
+				
+		remnantfour.cameras = [myCAM];
+		
+
+		loosehealtheffect.cameras = [myCAM];
+		drainwarning.cameras = [myCAM];
+		ayolookoutBG.cameras = [myCAM];
+		ayolookoutTEXT.cameras = [myCAM];
+		fixedscreen.cameras = [myCAM];
+
+
+		twelve.visible = false;
+		twoam.visible = false;
+		fiveam.visible = false;
+		bbhead.visible = false;
+		bbcartel.visible = false;
+		balloonsone.visible = false;
+		balloonstwo.visible = false;
+		balloonsfinal.visible = false;
+
+		clickmusic.cameras = [camHUD];
+		clickmusic.scrollFactor.set();
+
+		box.cameras = [camHUD];
+		box.scrollFactor.set();
+				
+		if(curStage == 'minigames')
+		{
+			lines.visible = true;
+		}
+		else
+		{
+			lines.visible = false;
+		}
+
+		new FlxTimer().start(1, function(tmr:FlxTimer)
+		{
+			FlxTween.tween(box, {angle: box.angle + 10}, 0.5, {ease: FlxEase.circOut, type: ONESHOT});
+		});
+
+
+		new FlxTimer().start(2, function(tmr:FlxTimer)
+		{
+			FlxTween.tween(box, {angle: box.angle - 20}, 0.5, {ease: FlxEase.circOut, type: ONESHOT});
+			new FlxTimer().start(1, function(tmr:FlxTimer)
+		    {
+			    FlxTween.tween(box, {angle: box.angle + 20}, 0.5, {ease: FlxEase.circOut, type: ONESHOT});
+		    });
+		}, 0);
+				
+		
+		if(dad.curCharacter == 'witheredfreddy')
+		{
+			twelve.visible = true;
+		    twoam.visible = false;
+		    fiveam.visible = false;
+
+		}
+		else if(dad.curCharacter == 'puppet')
+		{
+			twelve.visible = false;
+			twoam.visible = true;
+			fiveam.visible = false;
+
+		}
+		else if(dad.curCharacter == 'shadowbonnie')
+		{
+			twelve.visible = false;
+			twoam.visible = false;
+			fiveam.visible = true;
+				
+		}
+		
+		if(SONG.song.toLowerCase() == 'flashinglights' || SONG.song.toLowerCase() == 'flashinglights-hard' || SONG.song.toLowerCase() == 'flashinglights-easy' || SONG.song.toLowerCase() == 'flashinglights-freeplay' && FlxG.save.data.bbdisable == true)
+		{
+			new FlxTimer().start(20, function(tmr:FlxTimer)
+			{
+				FlxG.sound.play(Paths.sound('bbhello','shared'));
+
+				bbhead.visible = true;
+				bbhead.animation.play('coming', true);
+				
+				new FlxTimer().start(0.5, function(tmr:FlxTimer)
+				{
+					bbhead.animation.play('idle', true);
+				});
+				new FlxTimer().start(3, function(tmr:FlxTimer)
+				{
+					bbhead.animation.play('leaving', true);
+				});
+				new FlxTimer().start(3.5, function(tmr:FlxTimer)
+				{
+					bbhead.visible = false;
+					FlxG.sound.play(Paths.sound('bblaugh','shared'));
+				});
+			}, 0);
+                        new FlxTimer().start(30, function(tmr:FlxTimer)
+			{
+				FlxG.sound.play(Paths.sound('bbhi','shared'));
+		
+				bbcartel.visible = true;
+				bbcartel.animation.play('coming', true);
+				balloonsone.visible = false;
+						
+				new FlxTimer().start(0.5, function(tmr:FlxTimer)
+				{
+					bbcartel.animation.play('idle', true);
+				});
+				new FlxTimer().start(3, function(tmr:FlxTimer)
+				{
+					bbcartel.animation.play('leaving', true);
+				});
+				new FlxTimer().start(3.5, function(tmr:FlxTimer)
+				{
+					bbcartel.visible = false;
+					FlxG.sound.play(Paths.sound('bblaugh','shared'));
+				});
+				
+				
+				
+				
+				new FlxTimer().start(60, function(tmr:FlxTimer)
+				{
+					FlxG.sound.play(Paths.sound('bbhi','shared'));
+		
+					bbcartel.visible = true;
+					bbcartel.animation.play('coming', true);
+						
+					new FlxTimer().start(0.5, function(tmr:FlxTimer)
+					{
+						bbcartel.animation.play('idle', true);
+					});
+					new FlxTimer().start(3, function(tmr:FlxTimer)
+					{
+						bbcartel.animation.play('leaving', true);
+					});
+					new FlxTimer().start(3.5, function(tmr:FlxTimer)
+					{
+						bbcartel.visible = false;
+						FlxG.sound.play(Paths.sound('bblaugh','shared'));
+					});
+				}, 0);
+			});
+			new FlxTimer().start(45, function(tmr:FlxTimer)
+			{
+				FlxG.sound.play(Paths.sound('bblaugh','shared'));
+		
+				balloonsone.visible = true;
+				balloonsone.animation.play('one', true);
+						
+				new FlxTimer().start(10, function(tmr:FlxTimer)
+				{
+					balloonsone.animation.play('two', true);
+				});
+				
+			});
+			new FlxTimer().start(65, function(tmr:FlxTimer)
+			{
+				FlxG.sound.play(Paths.sound('bblaugh','shared'));
+		
+				balloonstwo.visible = true;
+				balloonstwo.animation.play('one', true);
+				balloonsfinal.visible = true;
+						
+				new FlxTimer().start(5, function(tmr:FlxTimer)
+				{
+					balloonstwo.animation.play('two', true);
+				});
+				new FlxTimer().start(10, function(tmr:FlxTimer)
+				{
+					balloonsfinal.visible = true;
+					balloonsfinal.animation.play('one', true);
+					camera.shake(0.02, 1);
+					new FlxTimer().start(5, function(tmr:FlxTimer)
+				    {
+					    balloonsfinal.visible = false;
+					    
+				    });
+				});
+				
+			});
+			new FlxTimer().start(145, function(tmr:FlxTimer)
+			{
+				FlxG.sound.play(Paths.sound('bblaugh','shared'));
+		
+				balloonstwo.visible = true;
+				balloonstwo.animation.play('one', true);
+				balloonsfinal.visible = true;
+						
+				new FlxTimer().start(5, function(tmr:FlxTimer)
+				{
+					balloonstwo.animation.play('two', true);
+				});
+				new FlxTimer().start(10, function(tmr:FlxTimer)
+				{
+					balloonsfinal.visible = true;
+					balloonsfinal.animation.play('one', true);
+					camera.shake(0.02, 1);
+					new FlxTimer().start(5, function(tmr:FlxTimer)
+				    {
+					    balloonsfinal.visible = false;
+					    
+				    });
+				});
+			
+			});
+			new FlxTimer().start(215, function(tmr:FlxTimer)
+			{
+				FlxG.sound.play(Paths.sound('bblaugh','shared'));
+		
+				balloonstwo.visible = true;
+				balloonstwo.animation.play('one', true);
+				balloonsfinal.visible = true;
+						
+				new FlxTimer().start(5, function(tmr:FlxTimer)
+				{
+					balloonstwo.animation.play('two', true);
+				});
+				new FlxTimer().start(10, function(tmr:FlxTimer)
+				{
+					balloonsfinal.visible = true;
+					balloonsfinal.animation.play('one', true);
+					camera.shake(0.02, 1);
+					new FlxTimer().start(5, function(tmr:FlxTimer)
+				    {
+					    balloonsfinal.visible = false;
+					    
+				    });
+				});
+				
+			});
+
+		}
+		else if(SONG.song.toLowerCase() == 'flashinglights' || SONG.song.toLowerCase() == 'flashinglights-hard' || SONG.song.toLowerCase() == 'flashinglights-easy' || SONG.song.toLowerCase() == 'flashinglights-freeplay' && FlxG.save.data.bbdisable == false)
+		{
+			new FlxTimer().start(20, function(tmr:FlxTimer)
+			{
+				
+				
+				
+				
+			new FlxTimer().start(0.5, function(tmr:FlxTimer)
+				{
+					
+				});
+				new FlxTimer().start(3, function(tmr:FlxTimer)
+				{
+					
+				});
+				new FlxTimer().start(3.5, function(tmr:FlxTimer)
+				{
+					
+				});
+			new FlxTimer().start(30, function(tmr:FlxTimer)
+			{
+				
+						
+				new FlxTimer().start(0.5, function(tmr:FlxTimer)
+				{
+					
+				});
+				new FlxTimer().start(3, function(tmr:FlxTimer)
+				{
+					
+				});
+				new FlxTimer().start(3.5, function(tmr:FlxTimer)
+				{
+					
+				});
+
+
+
+				new FlxTimer().start(60, function(tmr:FlxTimer)
+				{
+					
+						
+					new FlxTimer().start(0.5, function(tmr:FlxTimer)
+					{
+						
+					});
+					new FlxTimer().start(3, function(tmr:FlxTimer)
+					{
+						
+					});
+					new FlxTimer().start(3.5, function(tmr:FlxTimer)
+					{
+						
+					});
+				}, 0);
+			});
+			new FlxTimer().start(45, function(tmr:FlxTimer)
+			{
+				
+						
+				new FlxTimer().start(10, function(tmr:FlxTimer)
+				{
+					
+				});
+				
+			});
+			new FlxTimer().start(85, function(tmr:FlxTimer)
+			{
+				
+						
+				new FlxTimer().start(10, function(tmr:FlxTimer)
+				{
+					
+				});
+				
+			});
+			new FlxTimer().start(125, function(tmr:FlxTimer)
+			{
+				
+						
+				new FlxTimer().start(10, function(tmr:FlxTimer)
+				{
+					
+				});
+				
+			});
+			new FlxTimer().start(65, function(tmr:FlxTimer)
+			{
+				
+						
+				new FlxTimer().start(5, function(tmr:FlxTimer)
+				{
+					
+				});
+				new FlxTimer().start(10, function(tmr:FlxTimer)
+				{
+					
+					new FlxTimer().start(5, function(tmr:FlxTimer)
+				    {
+					    
+					    
+				    });
+				});
+				
+			});
+			new FlxTimer().start(145, function(tmr:FlxTimer)
+			{
+				
+						
+				new FlxTimer().start(5, function(tmr:FlxTimer)
+				{
+					
+				});
+				new FlxTimer().start(10, function(tmr:FlxTimer)
+				{
+					
+					new FlxTimer().start(5, function(tmr:FlxTimer)
+				    {
+					    
+					    
+				    });
+				});
+				
+			});
+			new FlxTimer().start(215, function(tmr:FlxTimer)
+			{
+				
+						
+				new FlxTimer().start(5, function(tmr:FlxTimer)
+				{
+					
+				});
+				new FlxTimer().start(10, function(tmr:FlxTimer)
+				{
+					
+					new FlxTimer().start(5, function(tmr:FlxTimer)
+				    {
+					    
+					    
+				    });
+				});
+				
+			});
+
+		}
+		else
+		{
+			bbhead.visible = false;
+		}
+					     
+		FlxTween.tween(fade, {alpha: 0}, 1, {ease: FlxEase.circOut, type: ONESHOT});
+
+		new FlxTimer().start(0.5, function(tmr:FlxTimer)
+		{
+			FlxG.sound.play(Paths.sound('startnight', 'shared'));
+			
+			FlxTween.tween(twelve, {alpha: 1}, 1, {ease: FlxEase.circOut, type: ONESHOT});
+			new FlxTimer().start(0.5, function(tmr:FlxTimer)
+			{
+				FlxTween.tween(twelve, {alpha: 0}, 3, {ease: FlxEase.circOut, type: ONESHOT});
+			});
+		});
+		new FlxTimer().start(0.5, function(tmr:FlxTimer)
+		{
+			
+			FlxTween.tween(twoam, {alpha: 1}, 1, {ease: FlxEase.circOut, type: ONESHOT});
+			new FlxTimer().start(0.5, function(tmr:FlxTimer)
+			{
+				FlxTween.tween(twoam, {alpha: 0}, 3, {ease: FlxEase.circOut, type: ONESHOT});
+			});
+		});
+		new FlxTimer().start(0.5, function(tmr:FlxTimer)
+		{
+			
+			FlxTween.tween(fiveam, {alpha: 1}, 1, {ease: FlxEase.circOut, type: ONESHOT});
+			new FlxTimer().start(0.5, function(tmr:FlxTimer)
+			{
+				FlxTween.tween(fiveam, {alpha: 0}, 3, {ease: FlxEase.circOut, type: ONESHOT});
+			});
+		});
+
+
+		if(SONG.song.toLowerCase() == 'flashinglights' || SONG.song.toLowerCase() == 'flashinglights-hard' || SONG.song.toLowerCase() == 'flashinglights-easy' || SONG.song.toLowerCase() == 'flashinglights-freeplay' && FlxG.save.data.downscroll == true)
+		{
+			musicboxBar.visible = true;
+			box.visible = true;
+			clickmusic.visible = true;
+		}
+		else if(SONG.song.toLowerCase() == 'flashinglights' || SONG.song.toLowerCase() == 'flashinglights-hard' || SONG.song.toLowerCase() == 'flashinglights-easy' || SONG.song.toLowerCase() == 'flashinglights-freeplay' && FlxG.save.data.downscroll == false)
+		{
+			musicboxBar.visible = true;
+			box.visible = false;
+			clickmusic.visible = true;
+		}
+		else
+		{
+			musicboxBar.visible = false;
+			box.visible = false;
+			clickmusic.visible = false;
+		}
+			
+		new FlxTimer().start(4, function(tmr:FlxTimer)
+		{
+			FlxTween.tween(ayolookoutBG, {alpha: 1}, 2, {type: ONESHOT, ease: FlxEase.circOut});
+			new FlxTimer().start(2, function(tmr:FlxTimer)
+			{
+					FlxTween.tween(ayolookoutBG, {alpha: 0}, 2, {type: ONESHOT, ease: FlxEase.circOut});
+			});
+		}, 0);
+		new FlxTimer().start(2, function(tmr:FlxTimer)
+		{
+			FlxTween.tween(ayolookoutTEXT, {alpha: 1}, 1, {type: ONESHOT, ease: FlxEase.circOut});
+			new FlxTimer().start(1, function(tmr:FlxTimer)
+			{
+					FlxTween.tween(ayolookoutTEXT, {alpha: 0}, 1, {type: ONESHOT, ease: FlxEase.circOut});
+			});
+		}, 0);
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+		
 		super.create();
 	}
 
+				
 	function schoolIntro(?dialogueBox:DialogueBox):Void
 	{
 		var black:FlxSprite = new FlxSprite(-100, -100).makeGraphic(FlxG.width * 2, FlxG.height * 2, FlxColor.BLACK);
@@ -1742,8 +2605,1225 @@ class PlayState extends MusicBeatState
 
 	public static var songRate = 1.5;
 
-	override public function update(elapsed:Float)
+	public function warningdrain()
 	{
+		drainwarning.alpha = 1;
+		
+		
+	}
+	
+	override public function update(elapsed:Float)
+	{       
+		FlxG.debugger.visible = false;
+
+
+		if(puppetmusic <= 3 && FlxG.mouse.overlaps(clickmusic))
+		{
+			warningdrain();
+		}
+		else
+		{
+
+		}
+		
+		
+		
+		
+		
+		
+		
+		
+		//if (remcount < 0)
+		//{
+			//remcount = 0;
+		//}
+		//if (remcount < 5)
+		//{
+			//remcount = 5;
+		//}
+
+		
+
+		//new FlxTimer().start(25, function(tmr:FlxTimer)
+		//{
+			//remcount = remcount - 1;
+		//});
+		
+		
+		
+		//new FlxTimer().start(25, function(tmr:FlxTimer)
+		//{
+			//remcount = remcount - 1;
+		//});
+		
+		notes.forEachAlive(function(daNote:Note)
+		{
+			if(daNote.noteType == 4)
+			{
+				if(FlxG.mouse.overlaps(daNote))
+				{
+					if(FlxG.mouse.justPressed)
+					{
+						daNote.visible = false;
+	
+						daNote.kill();
+						notes.remove(daNote, true);
+						FlxG.sound.play(Paths.sound('musicboxwindup', 'shared'), 1, false);
+						FlxG.sound.play(Paths.sound('Fix', 'shared'), 1, false);
+
+						if(SONG.song.toLowerCase() == 'flashinglights' || SONG.song.toLowerCase() == 'flashinglights-hard' || SONG.song.toLowerCase() == 'flashinglights-easy' || SONG.song.toLowerCase() == 'flashinglights-freeplay')
+						{
+							ayolookoutBG.visible = false;
+							ayolookoutTEXT.visible = false;
+							
+							clickmusic.visible = true;
+							fixedscreen.alpha = 1;
+							
+							
+							
+							}
+						else
+						{
+
+						}
+						
+					}
+				}
+			}
+			else
+			{
+
+			}
+		});
+		
+		//SONG TP OR END WEEK TP OR FREEPLAY SONG TP TO MENU
+		
+		if(SONG.song.toLowerCase() == 'nightshift')
+		{
+			FlxG.sound.music.onComplete = gotopuppet;
+		}
+		if(SONG.song.toLowerCase() == 'nightshift-hard')
+		{
+			FlxG.sound.music.onComplete = gotopuppethard;
+		}
+		if(SONG.song.toLowerCase() == 'nightshift-easy')
+		{
+			FlxG.sound.music.onComplete = gotopuppeteasy;
+		}
+		if(SONG.song.toLowerCase() == 'flashinglights')
+		{
+			FlxG.sound.music.onComplete = gotoshadow;
+		}
+		if(SONG.song.toLowerCase() == 'flashinglights-hard')
+		{
+			FlxG.sound.music.onComplete = gotoshadowhard;
+		}
+		if(SONG.song.toLowerCase() == 'flashinglights-easy')
+		{
+			FlxG.sound.music.onComplete = gotoshadoweasy;
+		}
+		if(SONG.song.toLowerCase() == 'shadows')
+		{
+			FlxG.sound.music.onComplete = gotomenu;
+		}
+		if(SONG.song.toLowerCase() == 'shadows-hard')
+		{
+			FlxG.sound.music.onComplete = gotomenu;
+		}
+		if(SONG.song.toLowerCase() == 'shadows-easy')
+		{
+			FlxG.sound.music.onComplete = gotomenu;
+		}
+
+
+		if(SONG.song.toLowerCase() == 'shadows-freeplay')
+		{
+			FlxG.sound.music.onComplete = gotomenu;
+		}
+		if(SONG.song.toLowerCase() == 'nightshift-freeplay')
+		{
+			FlxG.sound.music.onComplete = gotomenu;
+		}
+		if(SONG.song.toLowerCase() == 'flashinglights-freeplay')
+		{
+			FlxG.sound.music.onComplete = gotomenu;
+		}
+		
+		
+		// MUSIC DRAIN
+
+		if(SONG.song.toLowerCase() == 'flashinglights' || SONG.song.toLowerCase() == 'flashinglights-hard' || SONG.song.toLowerCase() == 'flashinglights-easy' || SONG.song.toLowerCase() == 'flashinglights-freeplay')
+		{
+			puppetmusic = puppetmusic - 0.007;
+
+			
+		}
+		else
+		{
+			puppetmusic = 10;
+		}
+		
+		
+		
+		if(puppetmusic <= 0)
+		{
+			health = 0;
+			boyfriend.stunned = true;
+			persistentUpdate = false;
+			persistentDraw = false;
+			paused = true;
+
+			vocals.stop();
+			FlxG.sound.music.stop();
+
+
+			openSubState(new PuppetJumpscare());
+
+			#if windows
+			// Game Over doesn't get his own variable because it's only used here
+			DiscordClient.changePresence("GAME OVER -- " + SONG.song + " (" + storyDifficultyText + ") " + Ratings.GenerateLetterRank(accuracy),"\nAcc: " + HelperFunctions.truncateFloat(accuracy, 2) + "% | Score: " + songScore + " | Misses: " + misses  , iconRPC);
+			#end
+
+			// FlxG.switchState(new GameOverState(boyfriend.getScreenPosition().x, boyfriend.getScreenPosition().y));
+			
+		}
+		
+		
+		if(FlxG.mouse.overlaps(clickmusic) && FlxG.mouse.pressed && puppetmusic <= 10 && clickmusic.visible == true)
+		{
+			puppetmusic += 0.05;
+			
+			
+		}
+		else
+		{
+			
+				
+		}
+
+		flash.alpha = flash.alpha - 0.01;
+		loosehealtheffect.alpha = loosehealtheffect.alpha - 0.01;
+		drainwarning.alpha = drainwarning.alpha - 0.01;
+		fixedscreen.alpha = fixedscreen.alpha - 0.01;
+
+		
+		// FLASH EFFECTS PUPPET
+		if(SONG.song.toLowerCase() == 'flashinglights' || SONG.song.toLowerCase() == 'flashinglights-hard' || SONG.song.toLowerCase() == 'flashinglights-easy' || SONG.song.toLowerCase() == 'flashinglights-freeplay' && FlxG.save.data.flashings == true)
+		{
+			if(curStep == 98)
+			{
+				flash.alpha = 1;
+				
+			}
+			if(curStep == 181)
+			{
+				flash.alpha = 1;
+				
+			}
+			if(curStep == 245)
+			{
+				flash.alpha = 1;
+				
+			}
+			if(curStep == 310)
+			{
+				flash.alpha = 1;
+				
+			}
+			if(curStep == 325)
+			{
+				flash.alpha = 1;
+				
+			}
+			if(curStep == 341)
+			{
+				flash.alpha = 1;
+				
+			}
+			if(curStep == 374)
+			{
+				flash.alpha = 1;
+				
+			}
+			if(curStep == 439)
+			{
+				flash.alpha = 1;
+				
+			}
+			if(curStep == 450)
+			{
+				boyfriend.animation.play('hey', true);
+				gf.animation.play('cheer', true);
+			}
+			if(curStep == 466)
+			{
+				camera.shake(0.05, 0.5);
+			}
+			if(curStep == 482)
+			{
+				boyfriend.animation.play('hey', true);
+				gf.animation.play('cheer', true);
+			}
+			if(curStep == 502)
+			{
+				flash.alpha = 1;
+				
+			}
+			if(curStep == 566)
+			{
+				flash.alpha = 1;
+				
+			}
+			if(curStep == 630)
+			{
+				flash.alpha = 1;
+				
+			}
+			if(curStep == 695)
+			{
+				flash.alpha = 1;
+				
+			}
+			if(curStep == 760)
+			{
+				flash.alpha = 1;
+				
+			}
+			if(curStep == 953)
+			{
+				flash.alpha = 1;
+				
+			}
+			if(curStep == 1017)
+			{
+				flash.alpha = 1;
+				
+			}
+			if(curStep == 1081)
+			{
+				flash.alpha = 1;
+				
+			}
+			if(curStep == 1166)
+			{
+				flash.alpha = 1;
+				
+			}
+		}
+		else if(SONG.song.toLowerCase() == 'flashinglights' || SONG.song.toLowerCase() == 'flashinglights-hard' || SONG.song.toLowerCase() == 'flashinglights-easy' || SONG.song.toLowerCase() == 'flashinglights-freeplay' && FlxG.save.data.flashings == false)
+		{
+			
+			if(curStep == 98)
+			{
+				flash.alpha = 0;
+			
+				
+			}
+			if(curStep == 181)
+			{
+				flash.alpha = 0;
+			
+				
+			}
+			if(curStep == 245)
+			{
+				flash.alpha = 0;
+				
+			}
+			if(curStep == 310)
+			{
+				flash.alpha = 0;
+				
+			}
+			if(curStep == 325)
+			{
+				flash.alpha = 0;
+				
+			}
+			if(curStep == 341)
+			{
+				flash.alpha = 0;
+				
+			}
+			if(curStep == 374)
+			{
+				flash.alpha = 0;
+			
+				
+			}
+			if(curStep == 439)
+			{
+				flash.alpha = 0;
+				
+			}
+			if(curStep == 450)
+			{
+				boyfriend.animation.play('hey', true);
+				gf.animation.play('cheer', true);
+			}
+			if(curStep == 466)
+			{
+				camera.shake(0.05, 0.5);
+			}
+			if(curStep == 482)
+			{
+				boyfriend.animation.play('hey', true);
+				gf.animation.play('cheer', true);
+			}
+			if(curStep == 502)
+			{
+				flash.alpha = 0;
+				
+			}
+			if(curStep == 566)
+			{
+				flash.alpha = 0;
+				
+			}
+			if(curStep == 630)
+			{
+				flash.alpha = 0;
+				
+			}
+			if(curStep == 695)
+			{
+				flash.alpha = 0;
+				
+			}
+			if(curStep == 760)
+			{
+				flash.alpha = 0;
+				
+			}
+			if(curStep == 953)
+			{
+				flash.alpha = 0;
+			
+				
+			}
+			if(curStep == 1017)
+			{
+				flash.alpha = 0;
+				
+			}
+			if(curStep == 1081)
+			{
+				flash.alpha = 0;
+				
+			}
+			if(curStep == 1166)
+			{
+				flash.alpha = 0;
+				
+			}
+			
+		}
+		
+		
+		else if(SONG.song.toLowerCase() == 'nightshift' || SONG.song.toLowerCase() == 'nightshift-hard' || SONG.song.toLowerCase() == 'nightshift-easy' || SONG.song.toLowerCase() == 'nightshift-freeplay' && FlxG.save.data.flashings == true)
+		{
+			if(curStep == 186)
+			{
+				flash.alpha = 0;
+				
+			}
+			if(curStep == 194)
+			{
+				flash.alpha = 0;
+				
+			}
+			if(curStep == 202)
+			{
+				flash.alpha = 0;
+				
+			}
+			if(curStep == 210)
+			{
+				flash.alpha = 0;
+				
+			}
+			if(curStep == 218)
+			{
+				flash.alpha = 0;
+				
+			}
+			if(curStep == 225)
+			{
+				flash.alpha = 0;
+				
+			}
+			if(curStep == 233)
+			{
+				flash.alpha = 0;
+				
+			}
+			if(curStep == 249)
+			{
+				flash.alpha = 0;
+				
+			}
+			if(curStep == 265)
+			{
+				flash.alpha = 0;
+			}
+			if(curStep == 280)
+			{
+				flash.alpha = 0;
+			}
+			if(curStep == 310)
+			{
+				flash.alpha = 0;
+			}
+			if(curStep == 435)
+			{
+				flash.alpha = 0;
+				
+			}
+			if(curStep == 497)
+			{
+				flash.alpha = 0;
+				
+			}
+			if(curStep == 560)
+			{
+				flash.alpha = 0;
+				
+			}
+			if(curStep == 684)
+			{
+				flash.alpha = 0;
+				
+			}
+			if(curStep == 746)
+			{
+				flash.alpha = 0;
+				
+			}
+			if(curStep == 808)
+			{
+				flash.alpha = 0;
+				
+			}
+			if(curStep == 870)
+			{
+				flash.alpha = 0;
+				
+			}
+			if(curStep == 933)
+			{
+				flash.alpha = 0;
+				
+			}
+			if(curStep == 995)
+			{
+				flash.alpha = 0;
+				
+			}
+			if(curStep == 2175)
+			{
+				camera.shake(0.05, 2);
+				boyfriend.animation.play('scaredinhell', true);
+				gf.animation.play('scaredinhell', true);
+				
+			}
+		}
+		else if(SONG.song.toLowerCase() == 'nightshift' || SONG.song.toLowerCase() == 'nightshift-hard' || SONG.song.toLowerCase() == 'nightshift-easy' || SONG.song.toLowerCase() == 'nightshift-freeplay' && FlxG.save.data.flashings == false)
+		{
+			
+			if(curStep == 186)
+			{
+				flash.alpha = 0;
+				
+			}
+			if(curStep == 194)
+			{
+				flash.alpha = 0;
+				
+			}
+			if(curStep == 202)
+			{
+				flash.alpha = 0;
+				
+			}
+			if(curStep == 210)
+			{
+				flash.alpha = 0;
+				
+			}
+			if(curStep == 218)
+			{
+				flash.alpha = 0;
+				
+			}
+			if(curStep == 225)
+			{
+				flash.alpha = 0;
+				
+			}
+			if(curStep == 233)
+			{
+				flash.alpha = 0;
+				
+			}
+			if(curStep == 249)
+			{
+				flash.alpha = 0;
+				
+			}
+			if(curStep == 265)
+			{
+				flash.alpha = 0;
+			}
+			if(curStep == 280)
+			{
+				flash.alpha = 0;
+			}
+			if(curStep == 310)
+			{
+				flash.alpha = 0;
+			}
+			if(curStep == 435)
+			{
+				flash.alpha = 0;
+				
+			}
+			if(curStep == 497)
+			{
+				flash.alpha = 0;
+				
+			}
+			if(curStep == 560)
+			{
+				flash.alpha = 0;
+				
+			}
+			if(curStep == 684)
+			{
+				flash.alpha = 0;
+				
+			}
+			if(curStep == 746)
+			{
+				flash.alpha = 0;
+				
+			}
+			if(curStep == 808)
+			{
+				flash.alpha = 0;
+				
+			}
+			if(curStep == 870)
+			{
+				flash.alpha = 0;
+				
+			}
+			if(curStep == 933)
+			{
+				flash.alpha = 0;
+				
+			}
+			if(curStep == 995)
+			{
+				flash.alpha = 0;
+				
+			}
+			if(curStep == 2175)
+			{
+				camera.shake(0.05, 2);
+				boyfriend.animation.play('scaredinhell', true);
+				gf.animation.play('scaredinhell', true);
+				
+			}
+		}
+		
+		else if(SONG.song.toLowerCase() == 'shadows' || SONG.song.toLowerCase() == 'shadows-hard' || SONG.song.toLowerCase() == 'shadows-easy' || SONG.song.toLowerCase() == 'shadows-freeplay' && FlxG.save.data.flashings == true)
+		{
+			if(curStep == 50)
+			{
+				flash.alpha = 1;
+				camera.shake(0.03, 1);
+				cover.alpha = 0;
+				
+			}
+			if(curStep == 59)
+			{
+				flash.alpha = 1;
+				
+			}
+			if(curStep == 67)
+			{
+				flash.alpha = 1;
+				
+			}
+			if(curStep == 84)
+			{
+				flash.alpha = 1;
+				
+			}
+			if(curStep == 102)
+			{
+				flash.alpha = 1;
+				
+			}
+			if(curStep == 134)
+			{
+				flash.alpha = 1;
+				
+			}
+			if(curStep == 168)
+			{
+				flash.alpha = 1;
+				
+			}
+			if(curStep == 202)
+			{
+				flash.alpha = 1;
+				
+			}
+			if(curStep == 236)
+			{
+				flash.alpha = 1;
+			}
+			if(curStep == 253)
+			{
+				flash.alpha = 1;
+			}
+			if(curStep == 269)
+			{
+				flash.alpha = 1;
+			}
+			if(curStep == 286)
+			{
+				flash.alpha = 1;
+				
+			}
+			if(curStep == 320)
+			{
+				flash.alpha = 1;
+				
+			}
+			if(curStep == 328)
+			{
+				flash.alpha = 1;
+				
+			}
+			if(curStep == 337)
+			{
+				flash.alpha = 1;
+				
+			}
+			if(curStep == 345)
+			{
+				flash.alpha = 1;
+				
+			}
+			if(curStep == 354)
+			{
+				flash.alpha = 1;
+				
+			}
+			if(curStep == 362)
+			{
+				flash.alpha = 1;
+				
+			}
+			if(curStep == 371)
+			{
+				flash.alpha = 1;
+				
+			}
+			if(curStep == 388)
+			{
+				flash.alpha = 1;
+				
+			}
+			if(curStep == 396)
+			{
+				flash.alpha = 1;
+				
+			}
+			if(curStep == 404)
+			{
+				flash.alpha = 1;
+				
+			}
+			if(curStep == 413)
+			{
+				flash.alpha = 1;
+				
+			}
+			if(curStep == 421)
+			{
+				flash.alpha = 1;
+				
+			}
+			if(curStep == 430)
+			{
+				flash.alpha = 1;
+				
+			}
+			if(curStep == 438)
+			{
+				flash.alpha = 1;
+				
+			}
+			if(curStep == 455)
+			{
+				flash.alpha = 1;
+				
+			}
+			if(curStep == 471)
+			{
+				flash.alpha = 1;
+				
+			}
+			if(curStep == 488)
+			{
+				flash.alpha = 1;
+				
+			}
+			if(curStep == 505)
+			{
+				flash.alpha = 1;
+				
+			}
+			if(curStep == 573)
+			{
+				flash.alpha = 1;
+				
+			}
+			if(curStep == 589)
+			{
+				flash.alpha = 1;
+				
+			}
+			if(curStep == 606)
+			{
+				flash.alpha = 1;
+				
+			}
+			if(curStep == 623)
+			{
+				flash.alpha = 1;
+				
+			}
+			if(curStep == 639)
+			{
+				flash.alpha = 1;
+				
+			}
+			if(curStep == 640)
+			{
+				flash.alpha = 1;
+				turningpurple();
+				
+			}
+			if(curStep == 775)
+			{
+				cover.alpha = 1;
+				
+				remove(dad);
+				dad = new Character(200, 200, "realbonnie");
+				add(dad);
+				dad.alpha = 0;
+				dad.x -= 80;
+				
+			}
+			if(curStep == 780)
+			{
+				flash.alpha = 0;
+				
+			}
+			if(curStep == 808)
+			{
+				flash.alpha = 1;
+				cover.alpha = 0;
+				dad.alpha = 1;
+				camera.shake(0.03, 1);
+				
+			}
+			if(curStep == 817)
+			{
+				flash.alpha = 1;
+				
+			}
+			if(curStep == 825)
+			{
+				flash.alpha = 1;
+				
+			}
+			if(curStep == 834)
+			{
+				flash.alpha = 1;
+				
+			}
+			if(curStep == 851)
+			{
+				flash.alpha = 1;
+				
+			}
+			if(curStep == 859)
+			{
+				flash.alpha = 1;
+				
+			}
+			if(curStep == 876)
+			{
+				flash.alpha = 1;
+				
+			}
+			if(curStep == 884)
+			{
+				flash.alpha = 1;
+				
+			}
+			if(curStep == 893)
+			{
+				flash.alpha = 1;
+				
+			}
+			if(curStep == 901)
+			{
+				flash.alpha = 1;
+				
+			}
+			if(curStep == 910)
+			{
+				flash.alpha = 1;
+				
+			}
+			if(curStep == 919)
+			{
+				flash.alpha = 1;
+				
+			}
+			if(curStep == 927)
+			{
+				flash.alpha = 1;
+				strumLineNotes.visible = false;
+				cpuStrums.visible = false;
+				healthBar.visible = false;
+				healthBarBG.visible = false;
+				iconP1.visible = false;
+				iconP2.visible = false;
+				boyfriend.color = FlxColor.WHITE;
+				gf.color = FlxColor.WHITE;
+				strumLineNotes.forEach(function(spr:FlxSprite)
+				{
+					spr.color = FlxColor.WHITE;
+				});
+				cpuStrums.forEach(function(spr:FlxSprite)
+				{
+					spr.color = FlxColor.WHITE;
+				});
+				dad.color = FlxColor.WHITE;
+			}
+			if(curStep == 941)
+			{
+				finalfade();
+				
+			}
+		}
+		if(SONG.song.toLowerCase() == 'shadows' || SONG.song.toLowerCase() == 'shadows-hard' || SONG.song.toLowerCase() == 'shadows-easy' || SONG.song.toLowerCase() == 'shadows-freeplay' && FlxG.save.data.flashings == false)
+		{
+			if(curStep == 50)
+				{
+					flash.alpha = 1;
+					camera.shake(0.03, 1);
+					cover.alpha = 0;
+					
+				}
+				if(curStep == 59)
+				{
+					flash.alpha = 0;
+					
+				}
+				if(curStep == 67)
+				{
+					flash.alpha = 0;
+					
+				}
+				if(curStep == 84)
+				{
+					flash.alpha = 0;
+					
+				}
+				if(curStep == 102)
+				{
+					flash.alpha = 0;
+					
+				}
+				if(curStep == 134)
+				{
+					flash.alpha = 0;
+					
+				}
+				if(curStep == 168)
+				{
+					flash.alpha = 0;
+					
+				}
+				if(curStep == 202)
+				{
+					flash.alpha = 0;
+					
+				}
+				if(curStep == 236)
+				{
+					flash.alpha = 0;
+				}
+				if(curStep == 253)
+				{
+					flash.alpha = 0;
+				}
+				if(curStep == 269)
+				{
+					flash.alpha = 0;
+				}
+				if(curStep == 286)
+				{
+					flash.alpha = 0;
+					
+				}
+				if(curStep == 320)
+				{
+					flash.alpha = 0;
+					
+				}
+				if(curStep == 328)
+				{
+					flash.alpha = 0;
+					
+				}
+				if(curStep == 337)
+				{
+					flash.alpha = 0;
+					
+				}
+				if(curStep == 345)
+				{
+					flash.alpha = 0;
+					
+				}
+				if(curStep == 354)
+				{
+					flash.alpha = 0;
+				
+					
+				}
+				if(curStep == 362)
+				{
+					flash.alpha = 0;
+					
+				}
+				if(curStep == 371)
+				{
+					flash.alpha = 0;
+					
+				}
+				if(curStep == 388)
+				{
+					flash.alpha = 0;
+					
+				}
+				if(curStep == 396)
+				{
+					flash.alpha = 0;
+					
+				}
+				if(curStep == 404)
+				{
+					flash.alpha = 0;
+					
+				}
+				if(curStep == 413)
+				{
+					flash.alpha = 0;
+					
+				}
+				if(curStep == 421)
+				{
+					flash.alpha = 0;
+					
+				}
+				if(curStep == 430)
+				{
+					flash.alpha = 0;
+					
+				}
+				if(curStep == 438)
+				{
+					flash.alpha = 0;
+					
+				}
+				if(curStep == 455)
+				{
+					flash.alpha = 0;
+					
+				}
+				if(curStep == 471)
+				{
+					flash.alpha = 0;
+					
+				}
+				if(curStep == 488)
+				{
+					flash.alpha = 0;
+					
+				}
+				if(curStep == 505)
+				{
+					flash.alpha = 0;
+					
+				}
+				if(curStep == 573)
+				{
+					flash.alpha = 0;
+					
+				}
+				if(curStep == 589)
+				{
+					flash.alpha = 0;
+					
+				}
+				if(curStep == 606)
+				{
+					flash.alpha = 0;
+					
+				}
+				if(curStep == 623)
+				{
+					flash.alpha = 0;
+					
+				}
+				if(curStep == 639)
+				{
+					flash.alpha = 0;
+					
+				}
+				if(curStep == 640)
+				{
+					
+					turningpurple();
+					
+				}
+				if(curStep == 775)
+				{
+					cover.alpha = 1;
+					
+					remove(dad);
+					dad = new Character(200, 200, "realbonnie");
+					add(dad);
+					dad.alpha = 0;
+					dad.x -= 80;
+					
+				}
+				if(curStep == 780)
+				{
+					flash.alpha = 0;
+					
+				}
+				if(curStep == 808)
+				{
+					flash.alpha = 1;
+					cover.alpha = 0;
+					dad.alpha = 1;
+					camera.shake(0.03, 1);
+					
+				}
+				if(curStep == 817)
+				{
+					flash.alpha = 0;
+					
+				}
+				if(curStep == 825)
+				{
+					
+					flash.alpha = 0;
+				}
+				if(curStep == 834)
+				{
+					flash.alpha = 0;
+					
+				}
+				if(curStep == 851)
+				{
+					flash.alpha = 0;
+					
+				}
+				if(curStep == 859)
+				{
+					flash.alpha = 0;
+					
+				}
+				if(curStep == 876)
+				{
+					flash.alpha = 0;
+					
+				}
+				if(curStep == 884)
+				{
+					flash.alpha = 0;
+					
+				}
+				if(curStep == 893)
+				{
+					flash.alpha = 0;
+					
+				}
+				if(curStep == 901)
+				{
+					flash.alpha = 0;
+					
+				}
+				if(curStep == 910)
+				{
+					flash.alpha = 0;
+					
+				}
+				if(curStep == 919)
+				{
+					flash.alpha = 0;
+					
+				}
+				if(curStep == 927)
+				{
+					flash.alpha = 1;
+					strumLineNotes.visible = false;
+					cpuStrums.visible = false;
+					healthBar.visible = false;
+					healthBarBG.visible = false;
+					iconP1.visible = false;
+					iconP2.visible = false;
+					boyfriend.color = FlxColor.WHITE;
+					gf.color = FlxColor.WHITE;
+					strumLineNotes.forEach(function(spr:FlxSprite)
+					{
+						spr.color = FlxColor.WHITE;
+					});
+					cpuStrums.forEach(function(spr:FlxSprite)
+					{
+						spr.color = FlxColor.WHITE;
+					});
+					dad.color = FlxColor.WHITE;
+				}
+				if(curStep == 941)
+				{
+					finalfade();
+					
+				}
+		}
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 		#if !debug
 		perfectMode = false;
 		#end
@@ -3510,7 +5590,79 @@ class PlayState extends MusicBeatState
 		{
 			FlxG.camera.zoom += 0.015;
 			camHUD.zoom += 0.03;
+			
+			
+			PAHSE 3 MODCHART
+
+			
 		}
+
+		// Camera Effect AND SHADOW BONNIE BACKGROUND CHANGE IN BEATS
+
+		
+		if (camZooming && FlxG.camera.zoom < 1.35 && curBeat % 5 == 0 && curStage == 'minigames')
+		{
+			FlxG.camera.zoom += 0.015;
+			camHUD.zoom += 0.09;
+
+			minigameone.visible = true;
+			minigametwo.visible = false;
+			minigamethree.visible = false;
+			minigamefour.visible = false;
+			minigamefive.visible = false;
+
+
+		}
+		else if (camZooming && FlxG.camera.zoom < 1.35 && curBeat % 5 == 1 && curStage == 'minigames')
+		{
+			FlxG.camera.zoom += 0.015;
+			camHUD.zoom += 0.09;
+
+			minigameone.visible = false;
+			minigametwo.visible = true;
+			minigamethree.visible = false;
+			minigamefour.visible = false;
+			minigamefive.visible = false;
+		}
+		else if (camZooming && FlxG.camera.zoom < 1.35 && curBeat % 5 == 2 && curStage == 'minigames')
+		{
+			FlxG.camera.zoom += 0.015;
+			camHUD.zoom += 0.09;
+
+			minigameone.visible = false;
+			minigametwo.visible = false;
+			minigamethree.visible = true;
+			minigamefour.visible = false;
+			minigamefive.visible = false;
+		}
+		else if (camZooming && FlxG.camera.zoom < 1.35 && curBeat % 5 == 3 && curStage == 'minigames')
+		{
+			FlxG.camera.zoom += 0.015;
+			camHUD.zoom += 0.09;
+
+			minigameone.visible = false;
+			minigametwo.visible = false;
+			minigamethree.visible = false;
+			minigamefour.visible = true;
+			minigamefive.visible = false;
+		}
+		else if (camZooming && FlxG.camera.zoom < 1.35 && curBeat % 5 == 4 && curStage == 'minigames')
+		{
+			FlxG.camera.zoom += 0.015;
+			camHUD.zoom += 0.09;
+
+			minigameone.visible = false;
+			minigametwo.visible = false;
+			minigamethree.visible = false;
+			minigamefour.visible = false;
+			minigamefive.visible = true;
+		}
+		else if (camZooming && FlxG.camera.zoom < 1.35 && curBeat % 4 == 0 && curStage != 'minigames')
+		{
+			FlxG.camera.zoom += 0.015;
+			camHUD.zoom += 0.03;
+		}
+		
 
 		iconP1.setGraphicSize(Std.int(iconP1.width + 30));
 		iconP2.setGraphicSize(Std.int(iconP2.width + 30));
